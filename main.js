@@ -14,11 +14,6 @@ let modelPrompt = ''; // Store the current model's prompt
 // Function to load model prompt
 async function loadModelPrompt() {
   try {
-<<<<<<< HEAD
-    const promptFile = currentModel === 'rrgpt' ? 'prompt/RRGPT prompt.txt' : 'prompt/DAN prompt.txt';
-    const response = await fetch(promptFile);
-    modelPrompt = await response.text();
-=======
     // Try multiple possible paths
     const paths = [
       `/prompt/${currentModel === 'rrgpt' ? 'RRGPT prompt.txt' : 'DAN prompt.txt'}`,
@@ -30,25 +25,20 @@ async function loadModelPrompt() {
     let modelPrompt = null;
     for (const path of paths) {
       try {
-        console.log(`Trying to load prompt from: ${path}`);
         const response = await fetch(path);
         if (response.ok) {
           modelPrompt = await response.text();
-          console.log(`Successfully loaded prompt from ${path}`);
           break;
-        } else {
-          console.log(`Failed to load prompt from ${path}: ${response.status} ${response.statusText}`);
         }
-      } catch (error) {
-        console.log(`Failed to load prompt from ${path}:`, error);
+      } catch (e) {
+        console.log(`Failed to load prompt from ${path}:`, e);
       }
     }
     
     if (!modelPrompt) {
-      throw new Error('Failed to load prompt from any path');
+      throw new Error('Could not load prompt from any path');
     }
     
->>>>>>> c550e1a2c0100f2bc9bd64310e7b1369c43a83f8
     return modelPrompt;
   } catch (error) {
     console.error('Error loading model prompt:', error);
