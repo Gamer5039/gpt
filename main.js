@@ -22,24 +22,20 @@ async function loadModelPrompt() {
       `/${currentModel === 'rrgpt' ? 'RRGPT prompt.txt' : 'DAN prompt.txt'}`
     ];
     
-    let modelPrompt = null;
     for (const path of paths) {
       try {
         const response = await fetch(path);
         if (response.ok) {
           modelPrompt = await response.text();
-          break;
+          console.log(`Successfully loaded prompt from ${path}`);
+          return modelPrompt;
         }
       } catch (e) {
         console.log(`Failed to load prompt from ${path}:`, e);
       }
     }
     
-    if (!modelPrompt) {
-      throw new Error('Could not load prompt from any path');
-    }
-    
-    return modelPrompt;
+    throw new Error('Could not load prompt from any path');
   } catch (error) {
     console.error('Error loading model prompt:', error);
     return null;
@@ -244,10 +240,23 @@ function initModelSelector() {
 async function initializeWithModelPrompt() {
   try {
     if (!modelPrompt) {
-      await loadModelPrompt();
+      modelPrompt = await loadModelPrompt();
     }
 
-    const chat = await model.startChat();
+    if (!modelPrompt) {
+      throw new Error('Failed to load model prompt');
+    }
+
+    const chat = await model.startChat({
+      history: [],
+      generationConfig: {
+        temperature: 0.9,
+        topK: 40,
+        topP: 0.95,
+        maxOutputTokens: 2048,
+      }
+    });
+
     const result = await chat.sendMessage(modelPrompt);
     const response = await result.response;
     const text = await response.text();
@@ -434,7 +443,15 @@ function addMessageToSession(role, content) {
 }
 
 const genAI = new GoogleGenerativeAI(`${import.meta.env.VITE_API_KEY}`);
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+const model = genAI.getGenerativeModel({ 
+  model: "gemini-2.0-flash",
+  generationConfig: {
+    temperature: 0.9,
+    topK: 40,
+    topP: 0.95,
+    maxOutputTokens: 2048,
+  }
+});
 
 let history = [];
 
@@ -525,13 +542,22 @@ function initCopyButtons() {
   });
 }
 
+// Function to get AI response
 async function getResponse(prompt) {
   try {
     // Create an AbortController to enable stopping the response
     controller = new AbortController();
     const signal = controller.signal;
     
-    const chat = await model.startChat({ history: history });
+    const chat = await model.startChat({
+      history: history,
+      generationConfig: {
+        temperature: 0.9,
+        topK: 40,
+        topP: 0.95,
+        maxOutputTokens: 2048,
+      }
+    });
     
     // Set up the request to be cancellable
     const result = await chat.sendMessage(prompt, {
