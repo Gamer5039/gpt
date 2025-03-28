@@ -18,17 +18,21 @@ async function loadModelPrompt() {
     const paths = [
       `/prompt/${currentModel === 'rrgpt' ? 'RRGPT prompt.txt' : 'DAN prompt.txt'}`,
       `prompt/${currentModel === 'rrgpt' ? 'RRGPT prompt.txt' : 'DAN prompt.txt'}`,
-      `assets/prompt/${currentModel === 'rrgpt' ? 'RRGPT prompt.txt' : 'DAN prompt.txt'}`
+      `assets/prompt/${currentModel === 'rrgpt' ? 'RRGPT prompt.txt' : 'DAN prompt.txt'}`,
+      `/${currentModel === 'rrgpt' ? 'RRGPT prompt.txt' : 'DAN prompt.txt'}`
     ];
     
     let modelPrompt = null;
     for (const path of paths) {
       try {
+        console.log(`Trying to load prompt from: ${path}`);
         const response = await fetch(path);
         if (response.ok) {
           modelPrompt = await response.text();
           console.log(`Successfully loaded prompt from ${path}`);
           break;
+        } else {
+          console.log(`Failed to load prompt from ${path}: ${response.status} ${response.statusText}`);
         }
       } catch (error) {
         console.log(`Failed to load prompt from ${path}:`, error);
