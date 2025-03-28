@@ -4,6 +4,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+<<<<<<< HEAD
+=======
+    "prebuild": "node scripts/prepare-build.js",
+>>>>>>> c550e1a2c0100f2bc9bd64310e7b1369c43a83f8
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
