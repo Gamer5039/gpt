@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RRGPT - Your AI Assistant</title>
+  <link rel="shortcut icon" href="/chatGPT.png" type="image/x-icon">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="extra.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+</head>
+
+<body>
+  <main id="first-main" class="first">
+    <div class="text-container">
+      <div class="logo-container">
+        <img src="chatGPT.png" alt="RRGPT Logo" id="logo">
+      </div>
+      <h1>Welcome to RRGPT</h1>
+      <p class="subtitle">Your intelligent AI companion powered by Google's Gemini model</p>
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">
+            <i class="fas fa-robot"></i>
+          </div>
+          <span>Multiple AI Personalities</span>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">
+            <i class="fas fa-code"></i>
+          </div>
+          <span>Code Generation</span>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">
+            <i class="fas fa-moon"></i>
+          </div>
+          <span>Dark Mode Support</span>
+        </div>
+      </div>
+      <button id="redirectButton" class="gradient-button" onclick="startChat()">
+        Get Started
+        <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+  </main>
+
+  <main id="second-main" class="second" style="display: none;">
+    <!-- Header with buttons -->
+    <div class="header">
+      <div class="header-title">RRGPT</div>
+      <div class="model-selector">
+        <label for="model-select">Model:</label>
+        <select id="model-select">
+          <option value="rrgpt">RRGPT</option>
+          <option value="dan">DAN GPT</option>
+        </select>
+      </div>
+      <div class="header-actions">
+        <button id="newChatButton" class="action-button" title="New Chat">
+          <i class="fas fa-plus"></i>
+        </button>
+        <button id="historyButton" class="action-button" title="Chat History">
+          <i class="fas fa-history"></i>
+        </button>
+        <button id="darkModeButton" class="action-button" title="Toggle Dark Mode">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- History sidebar -->
+    <div id="historySidebar" class="history-sidebar">
+      <div class="history-header">
+        <h3>Chat History</h3>
+        <button id="clearHistory" class="clear-history-btn">Clear All Chats</button>
+        <button id="closeHistory" class="close-history">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="historyList" class="history-list">
+        <!-- History items will be added here dynamically -->
+      </div>
+    </div>
+    
+    <!-- Chat Area -->
+    <div id="chat-container"></div>
+    
+    <!-- Input Area -->
+    <div class="fixed-bottom">
+      <form id="chat-form" class="form-container">
+        <textarea 
+          name="prompt" 
+          id="prompt" 
+          placeholder="Message RRGPT..."
+          rows="1"
+        ></textarea>
+        <button type="submit" class="send-button" id="sendButton">
+          <img src="/sendArrow.png" alt="Send">
+          <div class="loading-spinner"></div>
+          <div class="stop-button" id="stopButton">
+            <div class="stop-icon"></div>
+          </div>
+        </button>
+      </form>
+    </div>
+  </main>
+  
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script type="module" src="/main.js"></script>
+</body>
+
+</html>
